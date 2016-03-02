@@ -1,0 +1,22 @@
+/*
+tool.css
+*/
+.mainbutton{
+	position: fixed;
+	right: 15px;
+	top: 500px;
+	z-index: 999999px;
+}
+.extension-btn{
+	margin-left: 5px;
+	color:#ffffff;
+	padding: 5px 8px;
+	background: #f60;
+	border-radius: 4px;
+	border: 1px solid #f75700;
+}
+
+.douyubutton{
+padding-bottom: 5px;
+top:550px;
+}

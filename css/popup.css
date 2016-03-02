@@ -1,0 +1,41 @@
+/*
+popup.css
+*/
+
+.textarea{
+    height: 18px;
+    width: 168px;
+    vertical-align: middle;
+    margin-top: 0;
+    margin-left: 5px;
+    outline: 0 none;
+    border: 1px solid #D9D9D9;
+    border-top-color: #AAAAAA;
+    border-radius: 2px;
+    padding: 5px;
+}
+
+.voting-setting ul{
+    padding-bottom: 20px;
+    padding-left: 10px;
+}
+.voting-setting ul .display_name{
+    width: 20%
+}
+
+.voting-setting ul .true_value{
+    margin-left: 20px;
+    margin-right: 10px;
+    width: 60%;
+}
+
+.voting-setting ul .removeChoiceButton{
+    width: 20px;
+    height: 20px;
+    padding: 0;
+}
+.voting-setting ul .addChoiceButton{
+    width: 20px;
+    height:20px;
+    padding: 0;
+}

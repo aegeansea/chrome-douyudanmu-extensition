@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+    <title>popup</title>
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/popup.css">
+    
+  </head>
+  <body style="width:500px;height:800px; margin:20px">
+  	<div id="htmlalert" class="alert alert-success" role="alert" style="display:none;padding:5px;margin-bottom:2px;">
+  		  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  		  <strong>通知</strong>
+  	</div>
+  	<div class="alert alert-success" role="alert" style="padding:5px;margin-bottom:2px;">
+  		  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  		  <strong>通知</strong>语音弹幕功能、豆瓣FM功能都需要点击网页上的【开启弹幕监控】按钮
+  	</div>
+  	<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+		<div class="panel panel-default">
+		    <div class="panel-heading" role="tab" id="headingThree">
+		      <h4 class="panel-title">
+		        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTool" aria-expanded="true" aria-controls="collapseTool">
+		          弹幕机器人 弹幕选项  
+		        </a>
+		      </h4>
+		    </div>
+		    <div id="collapseTool" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThree">
+		      	<div class="panel-body">
+		      		<div class="msg-controle well">
+		      			<label>
+				            <input type="checkbox" checked>自动抢火箭鱼丸
+				        </label>
+				       	<div class="form-inline form-group-sm" style="margin-bottom:10px;">
+							  <div class="form-group">
+							    <label for="send-msg">刷屏弹幕(最多20字)</label>
+							    <input type="text" class="form-control" id="send-msg" placeholder="" style="width:200px">
+							  </div>
+							  <button class="btn btn-default send-msg-save">保存</button>
+						</div> 
+				       	<div class="form-inline form-group-sm" style="margin-bottom:10px;">
+							  <div class="form-group">
+							    <label for="send-msg">进入房间欢迎弹幕: </label>
+							    <input type="text" class="form-control" id="wellcome-msg" placeholder="" style="width:200px">
+							  </div>
+							  <button class="btn btn-default send-msg-save">保存</button>
+						</div>  		      			
+		      		</div>
+		      		<div class="well tts-controle">
+			      		<div class="checkbox">
+			      			<button class="btn btn-default tts-clear">清除未读完的</button>
+				            <label>
+				               <input type="checkbox" checked>多弹幕随机
+				            </label>
+				        </div>
+				       	<div class="form-inline form-group-sm" style="margin-bottom:10px;">
+							  <div class="form-group">
+							    <label for="volum">音量(默认1)</label>
+							    <input type="text" class="form-control" id="volume" placeholder="" style="width:40px">
+							  </div>
+							  <div class="form-group">
+							    <label for="exampleInputEmail2">阅速(默认1)</label>
+							    <input type="text" class="form-control" id="rate" placeholder="" style="width:40px">
+							  </div>
+							  <div class="form-group">
+							    <label for="exampleInputEmail2">音调(默认1)</label>
+							    <input type="text" class="form-control" id="pitch" placeholder="" style="width:40px">
+							  </div>
+							  <button class="btn btn-default tts-save">保存</button>
+						</div>
+	  						
+				        <div class="progress tts-volume">
+							  <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width:80%">
+							    音量
+							  </div>
+						</div>
+				        <div class="progress tts-rate">
+							  <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+							    读速
+							  </div>
+						</div>
+				        <div class="progress tts-pitch">
+							  <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%">
+							    声调
+							  </div>
+						</div>
+					</div>
+					<div class="well">
+						<span><strong>自动回复设置:</strong></span>
+						<div class="from-inline form-group-sm">
+							<div class="form-group">
+								<label style="width: 150px">开启指令查询</label><input type="checkbox" checked>
+								<label style="width: 150px;padding-left: 30px">最短回复间隔(分)</label><input type="number" style="width: 40px">
+								<label style="width: 150px">允许获取打乱(仅提供234)</label><input type="checkbox" checked>
+								<label style="width: 150px;padding-left: 30px">允许查询选手成绩</label><input type="checkbox" checked>
+								<label style="width: 150px">允许查询项目成绩</label><input type="checkbox" checked>
+								<label style="width: 150px;color: red;padding-left: 30px">房管不受以上约束</label><input type="checkbox" checked>
+							</div>
+						</div>
+					</div>
+
+					<div class="well ">
+
+						<div class="from-group-sm player-result-setting">
+							<div style="font-size: 18px"><strong>成绩监控:</strong></div>
+							<label style="width: 150px">开启成绩监控(#12.23)</label><input type="checkbox" checked>
+							<label style="width: 150px;padding-left: 50px">上传至服务端</label><input type="checkbox" checked>
+						</div>
+						<hr>
+						<div class="form-group voting-setting">
+							<div style="font-size: 18px"><strong>投票设置:</strong></div>
+							<label style="width: 100%">精确匹配 <input type="checkbox" checked ></label>
+							<label style="width: 30%">显示内容</label><label style="width: 60%;padding-right: 10%">识别语</label>
+
+							<ul>
+								<input class="display_name" value="选项1">
+								<input class="true_value" type="text" value="A" >
+								<button class="btn btn-danger removeChoiceButton">-</button>
+							</ul>
+
+							<ul>
+								<input class="display_name" value="选项2">
+								<input class="true_value" type="text" value="B">
+								<button class="btn btn-danger removeChoiceButton">-</button>
+							</ul>
+
+							<ul>
+								<input class="display_name" value="选项3">
+								<input class="true_value" type="text"value="C" >
+								<button class="btn btn-danger removeChoiceButton">-</button>
+							</ul>
+
+							<ul>
+								<input class="display_name" value="选项4">
+								<input class="true_value" type="text" value="D">
+								<button class="btn btn-danger removeChoiceButton">-</button>
+								<button class="btn btn-primary addChoiceButton">+</button>
+							</ul>
+						</div>
+						<hr>
+						<div class="from-group lucky-draw-setting ">
+							<div style="font-size: 18px"><strong>抽奖设置:</strong></div>
+						</div>
+					</div>
+		      	</div>
+		    </div>
+		</div> 
+
+
+	</div>
+	<script type="text/javascript" src="../js/jquery-2.1.1.js"></script>
+	<script type="text/javascript" src="../js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="../js/popup.js"></script>
+  </body>
+</html>
