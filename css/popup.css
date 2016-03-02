@@ -14,7 +14,9 @@ popup.css
     border-radius: 2px;
     padding: 5px;
 }
-
+.btn-save{
+    padding: 2px;
+}
 .voting-setting ul{
     padding-bottom: 20px;
     padding-left: 10px;

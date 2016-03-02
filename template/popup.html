@@ -15,15 +15,16 @@
   	</div>
   	<div class="alert alert-success" role="alert" style="padding:5px;margin-bottom:2px;">
   		  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-  		  <strong>通知</strong>语音弹幕功能、豆瓣FM功能都需要点击网页上的【开启弹幕监控】按钮
+  		  <strong>Notice </strong>请善意使用此工具，不要恶意回复或者刷屏！
   	</div>
   	<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 		<div class="panel panel-default">
 		    <div class="panel-heading" role="tab" id="headingThree">
 		      <h4 class="panel-title">
 		        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTool" aria-expanded="true" aria-controls="collapseTool">
-		          弹幕机器人 弹幕选项  
+					魔方直播弹幕机器人选项
 		        </a>
+				  <button class="btn btn-default default-setting" style="padding: 2px">设为默认值</button>
 		      </h4>
 		    </div>
 		    <div id="collapseTool" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThree">
@@ -37,14 +38,14 @@
 							    <label for="send-msg">刷屏弹幕(最多20字)</label>
 							    <input type="text" class="form-control" id="send-msg" placeholder="" style="width:200px">
 							  </div>
-							  <button class="btn btn-default send-msg-save">保存</button>
+							  <button class="btn btn-default send-msg-save btn-save">保存</button>
 						</div> 
 				       	<div class="form-inline form-group-sm" style="margin-bottom:10px;">
 							  <div class="form-group">
 							    <label for="send-msg">进入房间欢迎弹幕: </label>
 							    <input type="text" class="form-control" id="wellcome-msg" placeholder="" style="width:200px">
 							  </div>
-							  <button class="btn btn-default send-msg-save">保存</button>
+							  <button class="btn btn-default send-msg-save btn-save">保存</button>
 						</div>  		      			
 		      		</div>
 		      		<div class="well tts-controle">
@@ -67,45 +68,38 @@
 							    <label for="exampleInputEmail2">音调(默认1)</label>
 							    <input type="text" class="form-control" id="pitch" placeholder="" style="width:40px">
 							  </div>
-							  <button class="btn btn-default tts-save">保存</button>
-						</div>
-	  						
-				        <div class="progress tts-volume">
-							  <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width:80%">
-							    音量
-							  </div>
-						</div>
-				        <div class="progress tts-rate">
-							  <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-							    读速
-							  </div>
-						</div>
-				        <div class="progress tts-pitch">
-							  <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%">
-							    声调
-							  </div>
+							  <button class="btn btn-default tts-save btn-save">保存</button>
 						</div>
 					</div>
-					<div class="well">
-						<span><strong>自动回复设置:</strong></span>
+					<div class="well timer-setting">
+						<div style="font-size: 18px"><strong>计时器工具:</strong></div>
+						<div class="from-group-sm player-result-setting">
+							<label style="width: 150px">直播页面显示计时器</label><input type="checkbox" id="timer-display" checked>
+							<label style="width: 150px;padding-left: 20px">结果自动发送弹幕</label><input type="checkbox" id="timer-auto-danmu" unchecked>
+							<button class="btn btn-default timer-save btn-save">保存</button>
+						</div>
+					</div>
+					<div class="well auto-reply-setting" >
+						<span><strong style="font-size: 18px">自动回复设置:</strong></span>
 						<div class="from-inline form-group-sm">
 							<div class="form-group">
-								<label style="width: 150px">开启指令查询</label><input type="checkbox" checked>
-								<label style="width: 150px;padding-left: 30px">最短回复间隔(分)</label><input type="number" style="width: 40px">
-								<label style="width: 150px">允许获取打乱(仅提供234)</label><input type="checkbox" checked>
-								<label style="width: 150px;padding-left: 30px">允许查询选手成绩</label><input type="checkbox" checked>
-								<label style="width: 150px">允许查询项目成绩</label><input type="checkbox" checked>
-								<label style="width: 150px;color: red;padding-left: 30px">房管不受以上约束</label><input type="checkbox" checked>
+								<label style="width: 150px">开启自动回复</label><input type="checkbox" unchecked id="auto-reply-switch">
+								<label style="width: 150px;padding-left: 30px">最短回复间隔(分)</label><input type="number" style="width: 40px" id="min-reply-interval" value="1">
+								<label style="width: 150px">允许获取打乱(仅提供234)</label><input type="checkbox" checked id="reply-scramble-response-allowed">
+								<label style="width: 150px;padding-left: 30px">允许查询选手成绩</label><input type="checkbox" checked id="reply-competitor-info-allowed">
+								<label style="width: 150px">允许查询项目成绩</label><input type="checkbox" checked id="reply-wca-query-allowed">
+								<label style="width: 150px;color: red;padding-left: 30px">房管不受以上约束</label><input type="checkbox" checked id="manager-no-limited">
+								<button class="btn btn-default reply-save btn-save">保存</button>
 							</div>
 						</div>
 					</div>
-
-					<div class="well ">
+					<div class="well multi-setting">
 
 						<div class="from-group-sm player-result-setting">
-							<div style="font-size: 18px"><strong>成绩监控:</strong></div>
-							<label style="width: 150px">开启成绩监控(#12.23)</label><input type="checkbox" checked>
-							<label style="width: 150px;padding-left: 50px">上传至服务端</label><input type="checkbox" checked>
+							<div style="font-size: 18px"><strong>成绩设置:</strong></div>
+							<label style="width: 150px">成绩监控(仅主播)</label><input type="checkbox" unchecked id="result-monitor">
+							<label style="width: 200px;padding-left: 20px">上传至服务端（仅主播）</label><input type="checkbox" checked id="result-upload">
+							<button class="btn btn-default result-save btn-save">保存</button>
 						</div>
 						<hr>
 						<div class="form-group voting-setting">
@@ -137,10 +131,17 @@
 								<button class="btn btn-danger removeChoiceButton">-</button>
 								<button class="btn btn-primary addChoiceButton">+</button>
 							</ul>
+							<button class="btn btn-default voting-save btn-save">保存</button>
 						</div>
 						<hr>
 						<div class="from-group lucky-draw-setting ">
 							<div style="font-size: 18px"><strong>抽奖设置:</strong></div>
+							<label>奖品:<input class="text" style="margin-left: 50px" id="lucky-award-name"></label>
+							<div style="padding-top: 20px">
+								<p><strong style="width: 100%">手动添加名单:</strong></p>
+								<textarea class="lucky-draw-list" style="width: 100%;height: 100px" value="" id="lucky-manual-list"></textarea>
+							</div>
+							<button class="btn btn-default lucky-save btn-save">保存</button>
 						</div>
 					</div>
 		      	</div>
