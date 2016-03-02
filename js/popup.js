@@ -32,7 +32,8 @@ var popup ={
 				popup.styleInit()
 			})
 		})
-		$('.timer-save').on('click',function(options){
+		$('.timer-save').on('click',function(){
+			var options = {}
 			options.timer_display = $('#timer-display').is(':checked')
 			options.timer__auto_danmu = $('#timer-auto-danmu').is(':checked')
 			chrome.storage.local.set({'timer_option':options},function(){
@@ -40,7 +41,8 @@ var popup ={
 				popup.styleInit()
 			})
 		})
-		$('.reply-save').on('click',function(options){
+		$('.reply-save').on('click',function(){
+			var options = {}
 			options.reply = $('#auto-reply-switch').is(':checked')
 			options.min_interval = $('#min-reply-interval').val()
 			options.scramble = $('#reply-scramble-response-allowed').is(':checked')
@@ -52,7 +54,8 @@ var popup ={
 				popup.styleInit()
 			})
 		})
-		$('.result-save').on('click',function(options){
+		$('.result-save').on('click',function(){
+			var options = {}
 			options.monitor = $('#result-monitor').is(':checked')
 			options.upload = $('#result-upload').is(':checked')
 			chrome.storage.local.set({'result_option':options},function(){
@@ -60,11 +63,12 @@ var popup ={
 				popup.styleInit()
 			})
 		})
-		$('.voting-save').on('click',function(options){
+		$('.voting-save').on('click',function(){
+			var options = {}
 			console.log('djfksdjkf')
-
 		})
-		$('.lucky-save').on('click',function(options){
+		$('.lucky-save').on('click',function(){
+			var options = {}
 			options.awardname = $('#lucky-award-name').val()
 			options.manuallist = $('#lucky-manual-list').val()
 			chrome.storage.local.set({'lucky_option':options},function(){
@@ -94,20 +98,20 @@ var popup ={
 			$("#wellcome-msg").val(items.wellcomemsg)
 		});
 		chrome.storage.local.get('timer_option',function(options){
-			$('#timer-display').prop('checked',options.timer_display)
-			$('#timer-auto-danmu').prop('checked',options.timer__auto_danmu)
+			$('#timer-display').prop('checked',options.timer_option.timer_display)
+			$('#timer-auto-danmu').prop('checked',options.timer_option.timer__auto_danmu)
 		});
 		chrome.storage.local.get('reply_option',function(options){
-			$('#auto-reply-switch').prop('checked',options.reply)
-			$('#min-reply-interval').val(options.min_interval)
-			$('#reply-scramble-response-allowed').prop('checked',options.scramble)
-			$('#reply-competitor-info-allowed').prop('checked',options.competitor)
-		  	$('#reply-wca-query-allowed').prop('checked',options.wcaitem)
-			$('#manager-no-limited').prop('checked',options.manager)
+			$('#auto-reply-switch').prop('checked',options.reply_option.reply)
+			$('#min-reply-interval').val(options.reply_option.min_interval)
+			$('#reply-scramble-response-allowed').prop('checked',options.reply_option.scramble)
+			$('#reply-competitor-info-allowed').prop('checked',options.reply_option.competitor)
+		  	$('#reply-wca-query-allowed').prop('checked',options.reply_option.wcaitem)
+			$('#manager-no-limited').prop('checked',options.reply_option.manager)
 		});
 		chrome.storage.local.get('result_option',function(options){
-			$('#result-monitor').prop('checked',options.monitor)
-			$('#result-upload').prop('checked',options.upload)
+			$('#result-monitor').prop('checked',options.result_option.monitor)
+			$('#result-upload').prop('checked',options.result_option.upload)
 		});
 		chrome.storage.local.get('voting_option',function(options){
 
@@ -135,7 +139,16 @@ var popup ={
 		$('#result-upload').prop('checked',false)
 		$('#lucky-award-name').val('')
 		$('#lucky-manual-list').val('')
+		$('.timer-save').click()
+		$('.reply-save').click()
+		$('.result-save').click()
+		$('.voting-save').click()
+		$('.lucky-save').click()
 	}
 }
 //setInterval(walkloops, 2000);
-popup.init()
+
+
+$(document).ready(function(){
+	popup.init()
+})
