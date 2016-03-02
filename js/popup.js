@@ -5,7 +5,9 @@ var popup ={
 		popup.styleInit()
 		//监听保存
 
-		$('.default-setting').on('click',popup.Default())
+		$('.default-setting').on('click',function(){
+			popup.Default()
+		})
 		$('.tts-save').on('click',function(event){
 			chrome.storage.local.get('ttsoption',function(items){
 				items.ttsoption.volume=parseFloat($("#volume").val())
@@ -59,11 +61,8 @@ var popup ={
 			})
 		})
 		$('.voting-save').on('click',function(options){
-			options = 1
-			chrome.storage.local.set({'voting_option':options},function(){
-				popup.HtmlAlert("更新完成")
-				popup.styleInit()
-			})
+			console.log('djfksdjkf')
+
 		})
 		$('.lucky-save').on('click',function(options){
 			options.awardname = $('#lucky-award-name').val()
