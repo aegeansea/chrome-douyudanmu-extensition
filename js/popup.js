@@ -64,8 +64,18 @@ var popup ={
 			})
 		})
 		$('.voting-save').on('click',function(){
-			var options = {}
-			console.log('djfksdjkf')
+			num = $('.voting-setting ul').length
+			var vote_list = {}
+			for(i=0;i<num;i++){
+				index_name = $('.voting-setting ul').eq(i).children('.display_name').val()
+				value_name = $('.voting-setting ul').eq(i).children('.true_value').val()
+				vote_list[index_name] = value_name
+			}
+			chrome.storage.local.set({'voting_option':vote_list,'voting_length':num},function(){
+				popup.HtmlAlert("更新完成")
+				popup.styleInit()
+				console.log(vote_list,num)
+			})
 		})
 		$('.lucky-save').on('click',function(){
 			var options = {}
@@ -75,6 +85,15 @@ var popup ={
 				popup.HtmlAlert("更新完成")
 				popup.styleInit()
 			})
+		})
+
+
+		//jquery 1.9z以后取消了live等，改为全部用on代替，在父元素中绑定click，传入子元素等方式可以实现给append等标签绑定事件 important!!!!!!!!
+		$('.voting-setting').on('click','.addChoiceButton',function(){
+			votelist.addlist()
+		})
+		$('.voting-setting').on('click','.removeChoiceButton',function(){
+			votelist.removelist(this)
 		})
 
 		$('.doubanfm').on('click',function(){
@@ -113,8 +132,24 @@ var popup ={
 			$('#result-monitor').prop('checked',options.result_option.monitor)
 			$('#result-upload').prop('checked',options.result_option.upload)
 		});
-		chrome.storage.local.get('voting_option',function(options){
+		chrome.storage.local.get('voting_length',function(options){
+			num = options.voting_length
+			if($('.voting-setting ul').length!=num){
+				for (i=1;i<num;i++){
+					$('.voting-setting .addChoiceButton').click()
+				}
+			}
+			else
+				console.log(num)
 
+		});
+		chrome.storage.local.get('voting_option',function(options){
+			index = 0
+			for (ele in options.voting_option){
+				$('.voting-setting ul').eq(index).children('.display_name').val(ele)
+				$('.voting-setting ul').eq(index).children('.true_value').val(options.voting_option[ele])
+				index +=1
+			}
 		});
 		chrome.storage.local.get('lucky_option',function(options){
 
@@ -137,6 +172,7 @@ var popup ={
 		$('#manager-no-limited').prop('checked',true)
 		$('#result-monitor').prop('checked',false)
 		$('#result-upload').prop('checked',false)
+		votelist.init()
 		$('#lucky-award-name').val('')
 		$('#lucky-manual-list').val('')
 		$('.timer-save').click()
@@ -144,11 +180,65 @@ var popup ={
 		$('.result-save').click()
 		$('.voting-save').click()
 		$('.lucky-save').click()
-	}
+	},
 }
 //setInterval(walkloops, 2000);
 
+var votelist = {
+	init:function(){
+			$('.voting-setting ul').remove()
+
+			defaule_ul = '<ul> <input class="display_name" value="选项1"> <input class="true_value" type="text" value="A" > ' +
+				'<button class="btn btn-danger removeChoiceButton">-</button> </ul> ' +
+				'<ul> <input class="display_name" value="选项2"> <input class="true_value" type="text" value="B"> ' +
+				'<button class="btn btn-danger removeChoiceButton">-</button> </ul> ' +
+				'<ul> <input class="display_name" value="选项3"> <input class="true_value" type="text"value="C" > ' +
+				'<button class="btn btn-danger removeChoiceButton">-</button> </ul> ' +
+				'<ul> <input class="display_name" value="选项4"> <input class="true_value" type="text" value="D"> ' +
+				'<button class="btn btn-danger removeChoiceButton">-</button> ' +
+				'<button class="btn btn-primary addChoiceButton">+</button> </ul>'
+			$('.voting-setting .voting-save').before(defaule_ul)
+			$('.voting-save').click()
+	},
+	addlist: function() {
+		$('.voting-setting ul').last().children('.addChoiceButton').remove()
+		var value = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
+		var list_num = $('.voting-setting ul').length + 1
+		name_add = '<input class="display_name" value="选项' + list_num.toString() +'">'
+		value_add = '<input class="true_value" type="text" value="' + value[list_num-1] +'">'
+		remove_button = '<button class="btn btn-danger removeChoiceButton" style="margin-left: 5px">-</button>'
+		add_button = '<button class="btn btn-primary addChoiceButton" style="margin-left: 5px">+</button>'
+		total = '<ul>' + name_add + value_add + remove_button + add_button +'</ul>'
+		$('.voting-setting ul').last().after(total)
+	},
+	removelist:function(ele){
+		if($('.voting-setting ul').length>1){
+			if($(ele).next('.addChoiceButton').length==1){
+				add_button = '<button class="btn btn-primary addChoiceButton">+</button>'
+				$(ele).parent().remove()
+				$('.voting-setting ul').last().append(add_button)
+			}
+			else
+				$(ele).parent().remove()
+		}
+
+	}
+}
 
 $(document).ready(function(){
-	popup.init()
+	chrome.storage.local.get('init_flag',function(item){
+		if(item.init_flag){
+			popup.init()
+		}
+		else{
+			popup.Default()
+			popup.init()
+			chrome.storage.local.set({'init_flag':1},function(){
+				popup.HtmlAlert("初始化完成")
+			})
+		}
+
+	})
+
+
 })

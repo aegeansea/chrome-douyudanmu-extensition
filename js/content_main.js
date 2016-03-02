@@ -153,10 +153,10 @@ var content={
 	wellcomeMsg:function(){
 		var myDate=new Date()
 		var timeMsg=myDate.getHours()+':'+myDate.getMinutes()+':'+myDate.getSeconds()
-		var msg1=window.localStorage.getItem('wellcomemsg')?window.localStorage.getItem('wellcomemsg'):"注意!「超管」进入房间 北京时间"
+		var msg1=window.localStorage.getItem('wellcomemsg')?window.localStorage.getItem('wellcomemsg'):"666666"
 		var msg=msg1+timeMsg
 		//var msg="戒撸提醒 北京时间"+timeMsg
-		content.sendDouyuMsg(msg)
+		//content.sendDouyuMsg(msg)
 		
 	}
 }
@@ -165,14 +165,6 @@ $(document).ready(function(){
 	content.init()
 	if (document.domain.indexOf('douyu')>=0) {content.addDouyuButton()};
 	if (document.domain.indexOf('douban.fm')>=0) {doubanFm.init()};
-	if (document.domain.indexOf('futunn')>=0) {
-		futu.futucss()
-		futu.scrollLi()
-		if (GetQueryString("key")) {
-		key=GetQueryString("key")
-		futu.searchKey(key)
-		};
-	};
 
 	
 })
@@ -181,72 +173,4 @@ function GetQueryString(name)
      var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
      var r = window.location.search.substr(1).match(reg);
      if(r!=null)return r[2]; return null;
-}
-var futu={
-	init:function(){
-
-	},
-	futucss:function(){
-		$('.header').css('display','none')
-		$('.headerGap01').css('display','none')
-		$('.main04Right').children('.cBox01').each(function(i){
-			if (i!=1) {$(this).css('display','none')};
-		})
-		$('.myStockList01').css('height','500px')
-	},
-	searchKey:function(key){
-		$.ajax({
-			url:'https://www.futunn.com/trade/search?k='+key,
-			dataType: "JSON",
-			success:function(response){
-				console.log(response)
-				if (response.data.length==0) {
-
-				}else{
-					security_id=response.data[0].security_id
-					futu.addWatch(security_id)
-				}
-			}
-		})
-	},
-	addWatch:function(security_id){
-		$.ajax({
-			type:'POST',
-			url:'https://www.futunn.com/trade/watch-add',
-			data:{'_csrf':$("head meta[name='csrf-token']").attr('content'),'security_id':security_id},
-			dataType:"JSON",
-			success:function(response){
-				console.log(response)
-				window.close()
-			}
-		})
-	},
-	scrollLi:function(){
-		$("div.myStockList01").myScroll({
-		speed:40, 
-		rowHeight:50
-		});
-	}
-}
-var doubanFm={
-	init:function(){
-		//监控关闭doubanfm 设置loacalsorage doubanfm=0
-		console.log("init开始")
-
-	},
-	fmController:function(msg){
-		if (window.localStorage.getItem('doubanfm')==1) {
-			window.open(chrome.extension.getURL('/template/operation.html')+'?action='+msg.substr(1))
-		}else{console.log('监控到是豆瓣命令，但是没有开启 请到选项页设置开启')}
-	}
-}
-var ttsMessage={
-	init:function(){
-		if (window.localStorage.getItem('tts')==1) {
-			msg=nickName+'说'+chatMessage
-			chrome.runtime.sendMessage({action:'ttsMessage',content:msg},function(response){
-				console.log(response)
-			})			
-		};		
-	}
 }
