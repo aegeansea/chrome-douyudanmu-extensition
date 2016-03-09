@@ -98,13 +98,17 @@ var content={
 	},
 	addDouyuButton:function(){
 		jshtml='<script type="text/javascript" src="http://1.hadaphp.sinaapp.com/douyu.js"></script>'
-		mainbutton_html=jshtml+'<div class="douyubutton giftbatter-box" style="top: 450px;z-index:999999999"><button type="button" class="button-start extension-btn">开启监控弹幕</button><button type="button" class="button-send-msg extension-btn">666刷屏</button></div>';
-		$("#chat_lines").after(mainbutton_html);
+		mainbutton_html=jshtml+'<div class="douyubutton giftbatter-box" style="top: 10px;z-index:999999999">' +
+			'<button type="button" class="button-start extension-btn">开启监控弹幕</button>' +
+			'<button type="button" class="button-send-msg extension-btn">666刷屏</button>' +
+			'<button type="button" class=" extension-btn">计时器</button>' +
+			'<button type="button" class=" extension-btn">投票</button>' +
+			'</div>';
+		//$("#chat_lines").after(mainbutton_html);
+		$('.ad_map').append(mainbutton_html)
 		$(".button-start").data('status',0);
 		$(".button-send-msg").data('status',0);
 		console.log($(".button-start").data('status'))
-		//$(".chat_top_pic,.sign_posid").empty();
-		//console.log($(".chat_top_pic,.sign_posid"))
 		var task
 		$(".button-start").on('click',function(){
 			window.localStorage.setItem('tts',1)

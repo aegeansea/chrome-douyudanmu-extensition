@@ -5,7 +5,7 @@ tool.css
 	position: fixed;
 	right: 15px;
 	top: 500px;
-	z-index: 999999px;
+	z-index: 999999;
 }
 .extension-btn{
 	margin-left: 5px;
