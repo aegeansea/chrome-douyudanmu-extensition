@@ -33,44 +33,8 @@
 		      			<label>
 				            <input type="checkbox" checked>自动抢火箭鱼丸
 				        </label>
-				       	<div class="form-inline form-group-sm" style="margin-bottom:10px;">
-							  <div class="form-group">
-							    <label for="send-msg">刷屏弹幕(最多20字)</label>
-							    <input type="text" class="form-control" id="send-msg" placeholder="" style="width:200px">
-							  </div>
-							  <button class="btn btn-default send-msg-save btn-save">保存</button>
-						</div> 
-				       	<div class="form-inline form-group-sm" style="margin-bottom:10px;">
-							  <div class="form-group">
-							    <label for="send-msg">进入房间欢迎弹幕: </label>
-							    <input type="text" class="form-control" id="wellcome-msg" placeholder="" style="width:200px">
-							  </div>
-							  <button class="btn btn-default send-msg-save btn-save">保存</button>
-						</div>  		      			
 		      		</div>
-		      		<div class="well tts-controle">
-			      		<div class="checkbox">
-			      			<button class="btn btn-default tts-clear">清除未读完的</button>
-				            <label>
-				               <input type="checkbox" checked>多弹幕随机
-				            </label>
-				        </div>
-				       	<div class="form-inline form-group-sm" style="margin-bottom:10px;">
-							  <div class="form-group">
-							    <label for="volum">音量(默认1)</label>
-							    <input type="text" class="form-control" id="volume" placeholder="" style="width:40px">
-							  </div>
-							  <div class="form-group">
-							    <label for="exampleInputEmail2">阅速(默认1)</label>
-							    <input type="text" class="form-control" id="rate" placeholder="" style="width:40px">
-							  </div>
-							  <div class="form-group">
-							    <label for="exampleInputEmail2">音调(默认1)</label>
-							    <input type="text" class="form-control" id="pitch" placeholder="" style="width:40px">
-							  </div>
-							  <button class="btn btn-default tts-save btn-save">保存</button>
-						</div>
-					</div>
+
 					<div class="well timer-setting">
 						<div style="font-size: 18px"><strong>计时器工具:</strong></div>
 						<div class="from-group-sm player-result-setting">
@@ -95,35 +59,35 @@
 					</div>
 					<div class="well multi-setting">
 
-						<div class="from-group-sm player-result-setting">
-							<div style="font-size: 18px"><strong>成绩设置:</strong></div>
-							<label style="width: 150px">成绩监控(仅主播)</label><input type="checkbox" unchecked id="result-monitor">
-							<label style="width: 200px;padding-left: 20px">上传至服务端（仅主播）</label><input type="checkbox" checked id="result-upload">
-							<button class="btn btn-default result-save btn-save">保存</button>
+					<div class="from-group-sm player-result-setting">
+						<div style="font-size: 18px"><strong>成绩设置:</strong></div>
+						<label style="width: 150px">成绩监控(仅主播)</label><input type="checkbox" unchecked id="result-monitor">
+						<label style="width: 200px;padding-left: 20px">上传至服务端（仅主播）</label><input type="checkbox" checked id="result-upload">
+						<button class="btn btn-default result-save btn-save">保存</button>
+					</div>
+					<hr>
+					<div class="form-group voting-setting">
+						<div style="font-size: 18px"><strong>投票设置:</strong></div>
+						<label style="width: 100%">精确匹配 <input type="checkbox" checked ></label>
+						<label style="width: 30%">显示内容</label><label style="width: 60%;padding-right: 10%">识别语</label>
+						<ul>
+							<input class="display_name" value="选项1">
+							<input class="true_value" type="text" value="A">
+							<button class="btn btn-danger removeChoiceButton">-</button>
+							<button class="btn btn-primary addChoiceButton">+</button>
+						</ul>
+						<button class="btn btn-default voting-save btn-save">保存</button>
+					</div>
+					<hr>
+					<div class="from-group lucky-draw-setting ">
+						<div style="font-size: 18px"><strong>抽奖设置:</strong></div>
+						<label>奖品:<input class="text" style="margin-left: 50px" id="lucky-award-name"></label>
+						<div style="padding-top: 20px">
+							<p><strong style="width: 100%">手动添加名单:</strong></p>
+							<textarea class="lucky-draw-list" style="width: 100%;height: 100px" value="" id="lucky-manual-list"></textarea>
 						</div>
-						<hr>
-						<div class="form-group voting-setting">
-							<div style="font-size: 18px"><strong>投票设置:</strong></div>
-							<label style="width: 100%">精确匹配 <input type="checkbox" checked ></label>
-							<label style="width: 30%">显示内容</label><label style="width: 60%;padding-right: 10%">识别语</label>
-							<ul>
-								<input class="display_name" value="选项1">
-								<input class="true_value" type="text" value="A">
-								<button class="btn btn-danger removeChoiceButton">-</button>
-								<button class="btn btn-primary addChoiceButton">+</button>
-							</ul>
-							<button class="btn btn-default voting-save btn-save">保存</button>
-						</div>
-						<hr>
-						<div class="from-group lucky-draw-setting ">
-							<div style="font-size: 18px"><strong>抽奖设置:</strong></div>
-							<label>奖品:<input class="text" style="margin-left: 50px" id="lucky-award-name"></label>
-							<div style="padding-top: 20px">
-								<p><strong style="width: 100%">手动添加名单:</strong></p>
-								<textarea class="lucky-draw-list" style="width: 100%;height: 100px" value="" id="lucky-manual-list"></textarea>
-							</div>
-							<button class="btn btn-default lucky-save btn-save">保存</button>
-						</div>
+						<button class="btn btn-default lucky-save btn-save">保存</button>
+					</div>
 					</div>
 		      	</div>
 		    </div>

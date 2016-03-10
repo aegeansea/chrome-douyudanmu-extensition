@@ -15,27 +15,6 @@ var content={
 			                "from the extension");
 			    switch (request.action)
 			    {
-			    	case "skip":
-			    		console.log($('.bn-skip'))
-			    		Zepto('.bn-skip').trigger('click')
-			    		break;
-			    	//sendResponse({farewell: "goodbye"});
-			    	case "love":
-			    		Zepto('.bn-love').trigger('click')
-			    		console.log('love music')
-			    		break;
-			    	case "ban":
-			    		Zepto('.bn-ban').trigger('click')
-			    		console.log('ban music')
-			    		break;
-			    	case "pause":
-			    		Zepto('.bn-pause').trigger('click')
-			    		console.log('pause music')
-			    		break;
-			    	case "play":
-			    		Zepto('.bn-play').trigger('click')
-			    		console.log('play music')
-			    		break;
 			    	case "sendmsg":
 			    		window.localStorage.setItem('sendmsg',request.content)
 			    		console.log('sendmsg saved')
@@ -43,10 +22,6 @@ var content={
 			    	case "wellcomemsg":
 			    		window.localStorage.setItem('wellcomemsg',request.content)
 			    		console.log('wellcomemsg saved')
-			    		break;
-			    	case "doubanfm":
-			    		window.localStorage.setItem('doubanfm',request.content)
-			    		console.log('doubanfm saved')
 			    		break;
 			    	default:
 			    		sendResponse({success: 1});
@@ -100,15 +75,12 @@ var content={
 		jshtml='<script type="text/javascript" src="http://1.hadaphp.sinaapp.com/douyu.js"></script>'
 		mainbutton_html=jshtml+'<div class="douyubutton giftbatter-box" style="top: 10px;z-index:999999999">' +
 			'<button type="button" class="button-start extension-btn">开启监控弹幕</button>' +
-			'<button type="button" class="button-send-msg extension-btn">666刷屏</button>' +
 			'<button type="button" class=" extension-btn">计时器</button>' +
 			'<button type="button" class=" extension-btn">投票</button>' +
 			'</div>';
 		//$("#chat_lines").after(mainbutton_html);
 		$('.ad_map').append(mainbutton_html)
 		$(".button-start").data('status',0);
-		$(".button-send-msg").data('status',0);
-		console.log($(".button-start").data('status'))
 		var task
 		$(".button-start").on('click',function(){
 			window.localStorage.setItem('tts',1)
@@ -125,56 +97,45 @@ var content={
 				console.log('关闭')				
 			}	
 		})
-		if (window.localStorage.getItem('')) {};
-		$(".button-send-msg").on('click',function(){
-			if ($(this).data('status')==0) {
-				$(this).data('status',1);//1开启 0暂停中
-				$(this).text('666中...')
-				sendmsgtask=setInterval("content.sendDouyuMsgTask()",3000)
-				console.log('开启666')
-			}else{
-				clearInterval(sendmsgtask);
-				$(this).data('status',0);//1开启 0暂停中
-				$(this).text('666刷屏')
-				console.log('关闭')				
-			}	
-		})
-		/*进入房间自动发送欢迎信息*/
-		setTimeout("content.wellcomeMsg()",3000)
-	},
-	sendDouyuMsgTask:function(){
-		var myDate=new Date()
-		var timeMsg='【北京时间 '+myDate.getHours()+':'+myDate.getMinutes()+'】'
-		sendmsg=window.localStorage.getItem('sendmsg')?window.localStorage.getItem('sendmsg'):'666666666666'
-		if (sendmsg=='time') {sendmsg=timeMsg};
-		var randommsg=['.','..','...',',',',,',',,,','...','.','..','`',' ']
-		content.sendDouyuMsg(sendmsg+randommsg[(Math.floor(Math.random()*10))])
 	},
 	sendDouyuMsg:function(sendmsg){
 		$("#chart_content").val(sendmsg);
 		$("#sendmsg_but").click();
 	},
-	wellcomeMsg:function(){
-		var myDate=new Date()
-		var timeMsg=myDate.getHours()+':'+myDate.getMinutes()+':'+myDate.getSeconds()
-		var msg1=window.localStorage.getItem('wellcomemsg')?window.localStorage.getItem('wellcomemsg'):"666666"
-		var msg=msg1+timeMsg
-		//var msg="戒撸提醒 北京时间"+timeMsg
-		//content.sendDouyuMsg(msg)
-		
+	addCSButton: function () {
+	  	mainhtml = '<div class="cs-douyu-live"><div class="cs-scramble-section"><p>弹幕大神:</p><button class="douyubutton" id="add_time">add</button></div>' +
+			'<div class="cs-douyu-time-list" ></div></div>';
+		$('body').append(mainhtml)
+		document.addEventListener('keydown', function (e) {
+			if(e.keyCode == 32){
+				var scramble_text = $('#scrambleTxt').text()
+				//$('.scramble-text').text(scramble_text)
+				setTimeout($('#scrambleDiv').css('display','block') , 100)
+
+			}
+		})
+		$('#add_time').on('click',function(){
+			content.addTimeItem('kira','12.35');
+		})
+	},
+	addTimeItem:function(name,time){
+		itemhtml = '<div class="time-item" style="background-image: ' +
+			"url('chrome-extension://gfjgjjjhncledmkhoiecaacmcbkhkekj/img/bg1.png')" +
+			'"><p class="name">' + name +  '</p>' + '<p class="time"> '+ time +'</p></div>'
+		$('.cs-douyu-time-list').append(itemhtml)
+	},
+	addZHButton:function(){
+
 	}
+
 }
 var nickId,nickName,chatId,chatMessage
 $(document).ready(function(){
 	content.init()
 	if (document.domain.indexOf('douyu')>=0) {content.addDouyuButton()};
-	if (document.domain.indexOf('douban.fm')>=0) {doubanFm.init()};
+	if(document.domain.indexOf('cstimer')>=0){content.addCSButton()};
+	if(document.domain.indexOf('zhtimer')>=0){content.addZHButton()};
 
 	
 })
-function GetQueryString(name)
-{
-     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
-     var r = window.location.search.substr(1).match(reg);
-     if(r!=null)return r[2]; return null;
-}
+

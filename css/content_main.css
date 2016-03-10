@@ -20,3 +20,15 @@ tool.css
 padding-bottom: 5px;
 top:550px;
 }
+
+
+.cs-douyu-live{
+	z-index: 9999999;position: absolute;top: 12%;left: 80%;bottom: 10%;right: 0%;
+}
+.cs-scramble-section{
+	width: 100%;background-color: #449d44
+}
+
+.cs-douyu-time-list{
+	width: 100%;height: 800px;background-color: #761c19;
+}
