@@ -6,8 +6,8 @@ tool.js
 var content={
 	init:function(){
 		/*监听开启按钮*/
-		//监听music事件
-		chrome.extension.onRequest.addListener(
+		chrome.runtime.onMessage.addListener(
+		//chrome.extension.onRequest.addListener(
 			  function(request, sender, sendResponse) {
 			  	console.log(request)
 			    console.log(sender.tab ?
@@ -23,6 +23,14 @@ var content={
 			    		window.localStorage.setItem('wellcomemsg',request.content)
 			    		console.log('wellcomemsg saved')
 			    		break;
+					case "zhubo-time-result-backto-douyu":
+						console.log(request.content)
+						content.sendDouyuMsg(request.content)
+						break;
+					case "douyu-danmu-timer-back":
+						console.log(request.content)
+						content.addTimeItem(request.content.nickname,request.content.result)
+						break;
 			    	default:
 			    		sendResponse({success: 1});
 			    }	
@@ -33,31 +41,22 @@ var content={
 /*		var lastchatid=window.localStorage.getItem('lastchatid')
 		//查询最后一次上传messageid所在位置
 		lastchatidPostion=$('#chat_line_list').index($("span.text_cont,span.m").attr("chatid", lastchatid))
-*/		var msgDoms=$('#chat_line_list').has('.chartli').children().not($('.operated'))
+*/		var msgDoms=$('#chat_line_list').has('.jschartli').children().not($('.operated'))
 		var msglength=msgDoms.length
-		var randomi=Math.floor(Math.random()*msglength)
 		console.log(msglength)
-		msgDoms.each(function(i){
-/*			var data=$(this).find('span')
-			data.each(function(i){
-				if (i==1) {console.log($(this).text())};
-			})*/
+		msgDoms.each(function(){
 			nickId=$(this).find('span.name .nick').attr("rel");
 			nickName=$(this).find('span.name .nick').text();
 			chatId=$(this).find('span.text_cont,span.m').attr('chatid');
 			chatMessage=$(this).find('span.text_cont,span.m').text();
 			$(this).addClass('operated')
 			window.localStorage.setItem('lastchatid',chatId)
-
 			console.log(nickId,nickName,chatId,chatMessage);
-			/*选项控制：语音 等。。。*/
-			if (msglength>5) {
-				console.log('>>>>>开启随机tts<<<<<')
-				if (randomi==i) {
-					ttsMessage.init()
-					};
-			}else{ttsMessage.init()};
 			/*特殊命令控制*/
+			chrome.runtime.sendMessage({action: "danmu-time-result",timer:"douyu",nickname:nickName,result:chatMessage}, function(response) {
+				console.log(response);
+			});
+
 			if (chatMessage.match(/#(.+)#/)) {
 				key=chatMessage.match(/#(.+)#/)[1]
 				window.open("https://www.futunn.com/quote/index?key="+key,"_blank")
@@ -103,19 +102,43 @@ var content={
 		$("#sendmsg_but").click();
 	},
 	addCSButton: function () {
-	  	mainhtml = '<div class="cs-douyu-live"><div class="cs-scramble-section"><p>弹幕大神:</p><button class="douyubutton" id="add_time">add</button></div>' +
+	  	mainhtml = '<div class="cs-douyu-live"><div class="cs-scramble-section"><p>弹幕大神:</p></div>' +
 			'<div class="cs-douyu-time-list" ></div></div>';
 		$('body').append(mainhtml)
+		$('.cs-douyu-live').attr('data-status','preparing')
 		document.addEventListener('keydown', function (e) {
 			if(e.keyCode == 32){
-				var scramble_text = $('#scrambleTxt').text()
-				//$('.scramble-text').text(scramble_text)
-				setTimeout($('#scrambleDiv').css('display','block') , 100)
+				//var scramble_text = $('#scrambleTxt').text()
+				//$('.cs-scramble-section').text(scramble_text)
+				if($('.cs-douyu-live').attr('data-status')=='ending'){
+					$('.cs-douyu-live').css('display','none')
+					$('.cs-douyu-live .time-item').remove()
+					$('.cs-douyu-live').attr('data-status','preparing')
+					setTimeout($('#scrambleDiv').css('display','block') , 100)
+				}
+				if($('.cs-douyu-live').attr('data-status')=='preparing'){
+					setTimeout($('#scrambleDiv').css('display','block') , 100)
+				}
 
 			}
-		})
-		$('#add_time').on('click',function(){
-			content.addTimeItem('kira','12.35');
+		});
+
+		document.addEventListener('keyup',function(e){
+			if(e.keyCode==32) {
+				if($('.cs-douyu-live').attr('data-status')=='preparing'){
+					$('.cs-douyu-live').css('display','block')
+					$('.cs-douyu-live').attr('data-status','starting')
+					chrome.runtime.sendMessage({action: "timer-starting",timer:"cstimer"}, function(response) {
+						console.log(response);
+					});
+				}
+				else if($('.cs-douyu-live').attr('data-status')=='starting'){
+					$('.cs-douyu-live').attr('data-status','ending')
+					chrome.runtime.sendMessage({action: "timer-end",timer:"cstimer",time_result:$('#lcd').text()}, function(response) {
+						console.log(response);
+					});
+				}
+			}
 		})
 	},
 	addTimeItem:function(name,time){

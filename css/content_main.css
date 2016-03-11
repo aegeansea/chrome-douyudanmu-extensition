@@ -23,7 +23,7 @@ top:550px;
 
 
 .cs-douyu-live{
-	z-index: 9999999;position: absolute;top: 12%;left: 80%;bottom: 10%;right: 0%;
+	z-index: 9999999;position: absolute;top: 12%;left: 80%;bottom: 10%;right: 0%;display: none;
 }
 .cs-scramble-section{
 	width: 100%;background-color: #449d44
