@@ -8,7 +8,7 @@
       "default_title": "斗鱼弹幕机器人"
    },
    "content_scripts": [ {
-      "css": [ "css/content_main.css" ],
+      "css": [ "css/content_main.css", "css/animate.css"],
       "js": [ "js/jquery-2.1.1.js", "js/content_main.js", "js/scroll.js" ],
       "matches": [ "*://*/*" ]
    } ],

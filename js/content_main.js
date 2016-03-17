@@ -41,7 +41,8 @@ var content={
 /*		var lastchatid=window.localStorage.getItem('lastchatid')
 		//查询最后一次上传messageid所在位置
 		lastchatidPostion=$('#chat_line_list').index($("span.text_cont,span.m").attr("chatid", lastchatid))
-*/		var msgDoms=$('#chat_line_list').has('.jschartli').children().not($('.operated'))
+*/		var msgDoms_old=$('#chat_line_list').has('.jschartli').children().not($('.operated'))
+		var msgDoms = msgDoms_old.children('p').not($('.text_cont')).parent()
 		var msglength=msgDoms.length
 		console.log(msglength)
 		msgDoms.each(function(){
@@ -53,14 +54,20 @@ var content={
 			window.localStorage.setItem('lastchatid',chatId)
 			console.log(nickId,nickName,chatId,chatMessage);
 			/*特殊命令控制*/
-			chrome.runtime.sendMessage({action: "danmu-time-result",timer:"douyu",nickname:nickName,result:chatMessage}, function(response) {
-				console.log(response);
-			});
+			if(isNaN(chatMessage)){
+				
+			}
+			else{
+				chrome.runtime.sendMessage({action: "danmu-time-result",timer:"douyu",nickname:nickName,result:chatMessage}, function(response) {
+					console.log(response);
+				});
+			}
 
-			if (chatMessage.match(/#(.+)#/)) {
-				key=chatMessage.match(/#(.+)#/)[1]
-				window.open("https://www.futunn.com/quote/index?key="+key,"_blank")
-			};
+
+			//if (chatMessage.match(/#(.+)#/)) {
+			//	key=chatMessage.match(/#(.+)#/)[1]
+			//	window.open("https://www.futunn.com/quote/index?key="+key,"_blank")
+			//};
 			switch (chatMessage){
 				case '#skip':doubanFm.fmController(chatMessage);break;
 				case '#pause':doubanFm.fmController(chatMessage);break;
@@ -102,10 +109,16 @@ var content={
 		$("#sendmsg_but").click();
 	},
 	addCSButton: function () {
-	  	mainhtml = '<div class="cs-douyu-live"><div class="cs-scramble-section"><p>弹幕大神:</p></div>' +
+	  	mainhtml = '<div class="cs-douyu-live"><div class="cs-scramble-section"><p style="font-size: 30px;text-align: center">弹幕大神:</p></div>' +
 			'<div class="cs-douyu-time-list" ></div></div>';
+		//mainhtml = '<div class="cs-douyu-live"><div class="cs-scramble-section"><p>弹幕大神:</p><button id="addbutton">add</button></div>' +
+		//	'<div class="cs-douyu-time-list" ></div></div>';
 		$('body').append(mainhtml)
 		$('.cs-douyu-live').attr('data-status','preparing')
+		$('#addbutton').on('click', function () {
+			var time = (Math.random()*20).toFixed(3)
+			content.addTimeItem('kira',time)
+		})
 		document.addEventListener('keydown', function (e) {
 			if(e.keyCode == 32){
 				//var scramble_text = $('#scrambleTxt').text()
@@ -122,7 +135,6 @@ var content={
 
 			}
 		});
-
 		document.addEventListener('keyup',function(e){
 			if(e.keyCode==32) {
 				if($('.cs-douyu-live').attr('data-status')=='preparing'){
@@ -142,15 +154,140 @@ var content={
 		})
 	},
 	addTimeItem:function(name,time){
-		itemhtml = '<div class="time-item" style="background-image: ' +
-			"url('chrome-extension://gfjgjjjhncledmkhoiecaacmcbkhkekj/img/bg1.png')" +
-			'"><p class="name">' + name +  '</p>' + '<p class="time"> '+ time +'</p></div>'
-		$('.cs-douyu-time-list').append(itemhtml)
+		var danmu_item = $('.time-item')
+		var danmu_length =danmu_item.length
+		var new_order
+		var itemhtml,rank
+
+		if(danmu_length==0){
+			new_order=0
+
+		}
+		else if(danmu_length==1){
+			if(Number($('.time-item').children('.time').text())>Number(time))
+				new_order = 0
+			else
+				new_order = 1
+			console.log(new_order)
+		}
+		else{
+			for(i=1;i<=danmu_length;i++){
+				if(Number($('.time-item').children('.time').eq(0).text())>Number(time)){
+					new_order=0
+					console.log(new_order)
+					break;
+				}
+				else if(Number($('.time-item').children('.time').eq(i-1).text())<Number(time) && Number($('.time-item').children('.time').eq(i).text())>Number(time))
+				{
+					new_order=i
+					console.log(new_order)
+					break;
+				}
+				else if(Number($('.time-item').children('.time').eq(-1).text())<Number(time)){
+					new_order=danmu_length
+					console.log(new_order)
+					break;
+				}
+			}
+		}
+
+		switch(new_order)
+		{
+			case 0:
+				itemhtml = '<div class="time-item" style="height:80px;background-image: ' +
+					"url('chrome-extension://gfjgjjjhncledmkhoiecaacmcbkhkekj/img/bg1.png')" +
+					'"><p class="name123" style="font-size: 30px">' + name +  '</p>' + '<p class="time" style="top: 50%;font-size: 30px"> '+ time +'</p></div>'
+				console.log(itemhtml)
+				break;
+			case 1:
+				itemhtml = '<div class="time-item" style="height:50px;background-image: ' +
+					"url('chrome-extension://gfjgjjjhncledmkhoiecaacmcbkhkekj/img/bg2.png')" +
+					'"><p class="name123" style="font-size: 25px">' + name +  '</p>' + '<p class="time" style="font-size: 25px"> '+ time +'</p></div>'
+				console.log(itemhtml)
+				break;
+			case 2:
+				itemhtml = '<div class="time-item" style="height:35px;background-image: ' +
+					"url('chrome-extension://gfjgjjjhncledmkhoiecaacmcbkhkekj/img/bg3.png')" +
+					'"><p class="name123" style="font-size: 25px">' + name +  '</p>' + '<p class="time" style="font-size: 25px"> '+ time +'</p></div>'
+				console.log(itemhtml)
+				break;
+			default :
+				itemhtml = '<div class="time-item" style="background-image: ' +
+					"url('chrome-extension://gfjgjjjhncledmkhoiecaacmcbkhkekj/img/bg.png')" +
+					'"><p class="rank">'+(new_order+1).toString()+'</p><p class="name">' + name +  '</p>' + '<p class="time"> '+ time +'</p></div>'
+				console.log(itemhtml)
+				break;
+		}
+
+
+		if(danmu_length==0){
+			$('.cs-douyu-time-list').append(itemhtml)
+		}
+		else{
+			if(new_order==0){
+				$('.time-item:eq(0)').before(itemhtml);
+			}
+			else{
+				var position = '.time-item:eq('+(new_order-1).toString() + ')'
+				console.log(position)
+				$(position).after(itemhtml);
+			}
+		}
+
+		$('.time-item').addClass('animated fadeInRightBig');
+		var reformat = function(){
+			$('.time-item:eq(0)').css('height','80px')
+			$('.time-item:eq(0)').css('background-image',"url('chrome-extension://gfjgjjjhncledmkhoiecaacmcbkhkekj/img/bg1.png')")
+			$('.time-item:eq(0) p:eq(0)').addClass('name123')
+			$('.time-item:eq(0) p:eq(0)').removeClass('name')
+			$('.time-item:eq(0) p:eq(0)').css('font-size','30px')
+			$('.time-item:eq(0) p:eq(1)').css('font-size','30px')
+			$('.time-item:eq(0) p:eq(1)').css('top','50%')
+
+
+			$('.time-item:eq(1)').css('height','50px')
+			$('.time-item:eq(1)').css('background-image',"url('chrome-extension://gfjgjjjhncledmkhoiecaacmcbkhkekj/img/bg2.png')")
+			$('.time-item:eq(1) p:eq(0)').removeClass('name')
+			$('.time-item:eq(1) p:eq(0)').addClass('name123')
+			$('.time-item:eq(1) p:eq(0)').css('font-size','25px')
+			$('.time-item:eq(1) p:eq(1)').css('font-size','25px')
+			$('.time-item:eq(1) p:eq(1)').css('top','10%')
+
+			$('.time-item:eq(2)').css('height','35px')
+			$('.time-item:eq(2)').css('background-image',"url('chrome-extension://gfjgjjjhncledmkhoiecaacmcbkhkekj/img/bg3.png')")
+			$('.time-item:eq(2) p:eq(0)').removeClass('name')
+			$('.time-item:eq(2) p:eq(0)').addClass('name123')
+			$('.time-item:eq(2) p:eq(0)').css('font-size','25px')
+			$('.time-item:eq(2) p:eq(1)').css('font-size','25px')
+			$('.time-item:eq(2) p:eq(1)').css('top','10%')
+
+
+			$('.time-item:gt(2)').css('height','30px')
+			$('.time-item:gt(2)').css('background-image',"url('chrome-extension://gfjgjjjhncledmkhoiecaacmcbkhkekj/img/bg.png')")
+			$('.time-item:gt(2)').each(function(){
+					if($(this).children('p').size()==2){
+						$(this).children('p:eq(0)').removeClass('name123')
+						$(this).children('p:eq(0)').addClass('name')
+						html_add = '<p class="rank">'+($(this).index()+1).toString()+'</p>'
+						$(this).children('p:eq(0)').before(html_add)
+					}
+					else{
+						$(this).children('p:eq(0)').text(($(this).index()+1).toString())
+					}
+					$(this).children('p').css('font-size','20px')
+					$(this).children('p').css('top','10%')
+			})
+
+
+
+		}
+		setTimeout(reformat,300)
+
+
 	},
 	addZHButton:function(){
 
 	}
-
 }
 var nickId,nickName,chatId,chatMessage
 $(document).ready(function(){
