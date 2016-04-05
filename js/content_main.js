@@ -3,6 +3,37 @@ tool.js
 */
 
 /*content_main.js*/
+//remove element in an array
+Array.prototype.indexOf = function(val) {
+	for (var i = 0; i < this.length; i++) {
+		if (this[i] == val) return i;
+	}
+	return -1;
+};
+Array.prototype.remove = function(val) {
+	var index = this.indexOf(val);
+	if (index > -1) {
+		this.splice(index, 1);
+	}
+};
+
+
+var RandomEffect={
+	color:function(){
+		return '#'+('00000'+(Math.random()*0x1000000<<0).toString(16)).substr(-6);
+	},
+	fontsize: function () {
+		var size = (Math.floor(Math.random()*12)+1)*3+25;
+		return size.toString() + 'px'
+	},
+	position_t: function(){
+		var num = Math.floor(Math.random()*40);
+		var pos = (40 + num*(1-(num%2)*2)).toString() + '%';
+		return pos
+	}
+}
+var draw_name_list = []
+
 var content={
 	init:function(){
 		/*监听开启按钮*/
@@ -38,11 +69,15 @@ var content={
 	},
 	Operation:function(){
 		console.log('------------------------------')
-/*		var lastchatid=window.localStorage.getItem('lastchatid')
-		//查询最后一次上传messageid所在位置
-		lastchatidPostion=$('#chat_line_list').index($("span.text_cont,span.m").attr("chatid", lastchatid))
-*/		var msgDoms_old=$('#chat_line_list').has('.jschartli').children().not($('.operated'))
-		var msgDoms = msgDoms_old.children('p').not($('.text_cont')).parent()
+
+		var msgDoms_old
+		if($('#chat_line_list').length){
+			msgDoms_old=$('#chat_line_list').has('.jschartli').children().children().not('.operated')
+		}
+		else{
+			msgDoms_old=$('.c-list').has('.jschartli').children().children().not('.operated')
+		}
+		var msgDoms = msgDoms_old.children('.name').parent()
 		var msglength=msgDoms.length
 		console.log(msglength)
 		msgDoms.each(function(){
@@ -55,7 +90,7 @@ var content={
 			console.log(nickId,nickName,chatId,chatMessage);
 			/*特殊命令控制*/
 			if(isNaN(chatMessage)){
-				
+
 			}
 			else{
 				chrome.runtime.sendMessage({action: "danmu-time-result",timer:"douyu",nickname:nickName,result:chatMessage}, function(response) {
@@ -77,19 +112,85 @@ var content={
 			}
 		})
 	},
+	luckyDraw: function () {
+		var msgDoms_old
+		if($('#chat_line_list').length){
+			msgDoms_old=$('#chat_line_list').has('.jschartli').children().children().not('.operated')
+		}
+		else{
+			msgDoms_old=$('.c-list').has('.jschartli').children().children().not('.operated')
+		}
+		var msgDoms = msgDoms_old.children('.name').parent()
+		var msglength=msgDoms.length
+		console.log(msglength)
+		msgDoms.each(function(){
+			nickId=$(this).find('span.name .nick').attr("rel");
+			nickName_old=$(this).find('span.name .nick').text();
+			nickName = nickName_old.substring(0,nickName_old.length-1);
+			$(this).addClass('operated')
+			window.localStorage.setItem('lastchatid',chatId)
+			if($.inArray(nickName,draw_name_list)==-1){
+				draw_name_list.push(nickName);
+				var draw_user_color = RandomEffect.color()
+				var draw_user_size = RandomEffect.fontsize()
+				var draw_user_left = RandomEffect.position_t()
+				var draw_user_top = RandomEffect.position_t()
+				var draw_user_html = '<p '+ 'style="position:absolute;'+ 'font-size:'+ draw_user_size + ';color:'+draw_user_color + ';left:'+draw_user_left + ';top:' + draw_user_top + '">'+ nickName +'</p>';
+				console.log(draw_user_html)
+				$('.lucky-draw-panel').append(draw_user_html)
+				console.log(nickName + '添加完毕');
+
+			}
+			else{
+				console.log(nickName + '已存在');
+			}
+
+			/*特殊命令控制*/
+		})
+	},
 	addDouyuButton:function(){
 		jshtml='<script type="text/javascript" src="http://1.hadaphp.sinaapp.com/douyu.js"></script>'
-		mainbutton_html=jshtml+'<div class="douyubutton giftbatter-box" style="top: 10px;z-index:999999999">' +
+		mainbutton_html=jshtml+'<div class="douyubutton" style="top: 0px;float:left; margin-left: 20px; position: relative; z-index:999999999">' +
 			'<button type="button" class="button-start extension-btn">开启监控弹幕</button>' +
 			'<button type="button" class=" extension-btn">计时器</button>' +
 			'<button type="button" class=" extension-btn">投票</button>' +
+			'<button type="button" class="lucky-draw extension-btn">抽奖</button>' +
 			'</div>';
+
+		draw_html = '<div class="lucky-draw-panel">' +
+			'<button class="extension-btn" style="position: absolute;left: 95%;margin:20px;z-index: 999" id="draw-close">X</button>' +
+			'<button class="button-draw-listen extension-btn" style="z-index: 999;position:absolute;margin:20px;">开始接受弹幕</button>' +
+			'<div style="text-align: center"><button class="draw-button extension-btn">抽奖</button></div>' +
+			'</div>'+ '<div class="lucky-draw-result"><h5 style="font-size: 30px">获奖名单：</h5></div>'
+		$('body').append(draw_html)
 		//$("#chat_lines").after(mainbutton_html);
-		$('.ad_map').append(mainbutton_html)
+		//$('.ad_map').append(mainbutton_html)
+		$('#box_div').after(mainbutton_html)
+		$('.get-yw').after(mainbutton_html)
 		$(".button-start").data('status',0);
+		$(".button-start").data('status',0);
+		$(".button-draw-listen").data('status',0);
+
+		var draw_task
+
+		$(".button-draw-listen").on('click',function(){
+			if ($(this).data('status')==0) {
+				$(this).data('status',1);//1开启 0暂停中
+				$(this).text('停止接受弹幕...')
+				$('.lucky-draw-panel .random-name-display').remove()
+				draw_task=setInterval(content.luckyDraw,500)
+				$(".shie-input").click()
+				console.log('开启获取id')
+			}else{
+				clearInterval(draw_task);
+				$(this).data('status',0);//1开启 0暂停中
+				$(this).text('开始接受弹幕')
+			}
+		})
+
+
 		var task
 		$(".button-start").on('click',function(){
-			window.localStorage.setItem('tts',1)
 			if ($(this).data('status')==0) {
 				$(this).data('status',1);//1开启 0暂停中
 				$(this).text('开启中...')
@@ -102,6 +203,55 @@ var content={
 				$(this).text('开启监控')
 				console.log('关闭')				
 			}	
+		})
+
+		$(".lucky-draw").on('click',function(){
+			$(".lucky-draw-panel").css('display','block')
+			$(".lucky-draw-result").css('display','block')
+			var msgDoms_old
+			if($('#chat_line_list').length){
+				msgDoms_old=$('#chat_line_list').has('.jschartli').children().children().not('.operated')
+			}
+			else{
+				msgDoms_old=$('.c-list').has('.jschartli').children().children().not('.operated')
+			}
+			msgDoms_old.children('.name').parent().addClass('operated')
+		})
+
+		$("#draw-close").on('click',function(){
+			draw_name_list = [];
+			$('.lucky-draw-panel p').remove();
+			$('.lucky-draw-panel .random-name-display').remove()
+			$(".lucky-draw-panel").css('display','none');
+			$(".lucky-draw-result").css('display','none');
+			$(".lucky-draw-result p").remove();
+		})
+
+		var randomNameDisplay = function () {
+			$('.lucky-draw-panel .random-name-display').remove()
+			nameDisplay = draw_name_list[Math.floor(Math.random()*draw_name_list.length)]
+			name_color = RandomEffect.color()
+			name_html = '<div class="random-name-display" style="position:absolute;top: 0%;bottom: 0%;left:0%;right: 0%;text-align: center;' +
+				'background:white"><p style="position:absolute;font-size: 80px;top:20%;bottom:20%;left:10%;right:10%;color:'+ name_color + '" >' + nameDisplay + '</p></div>'
+			console.log(name_html)
+			setTimeout($('.lucky-draw-panel').append(name_html),500)
+		}
+
+		var randomtask
+		$(".draw-button").on('click',function(){
+			if ($(this).data('status')==0) {
+				$(this).data('status',1);//1开启 0暂停中
+				$(this).text('停止...')
+				randomtask=setInterval(randomNameDisplay,50)
+			}else{
+				clearInterval(randomtask);
+				var draw_result_html = '<p style="font-size: 20px">'+ $('.random-name-display p').text() +'</p>'
+				$('.lucky-draw-result').append(draw_result_html)
+				setTimeout(draw_name_list.remove($('.random-name-display p').text()))
+				$(this).data('status',0);//1开启 0暂停中
+				$(this).text('抽奖')
+
+			}
 		})
 	},
 	sendDouyuMsg:function(sendmsg){
@@ -286,7 +436,49 @@ var content={
 
 	},
 	addZHButton:function(){
+		mainhtml = '<div class="zh-douyu-live"><div class="zh-scramble-section"><p style="font-size: 30px;text-align: center">弹幕大神:</p></div>' +
+			'<div class="zh-douyu-time-list" ></div></div>';
+		//mainhtml = '<div class="cs-douyu-live"><div class="cs-scramble-section"><p>弹幕大神:</p><button id="addbutton">add</button></div>' +
+		//	'<div class="cs-douyu-time-list" ></div></div>';
+		$('body').append(mainhtml)
+		$('.zh-douyu-live').attr('data-status','preparing')
+		$('#addbutton').on('click', function () {
+			var time = (Math.random()*20).toFixed(3)
+			content.addTimeItem('kira',time)
+		})
+		document.addEventListener('keydown', function (e) {
+			if(e.keyCode == 32){
+				//var scramble_text = $('#scrambleTxt').text()
+				//$('.cs-scramble-section').text(scramble_text)
+				if($('.zh-douyu-live').attr('data-status')=='ending'){
+					$('.zh-douyu-live').css('display','none')
+					$('.zh-douyu-live .time-item').remove()
+					$('.zh-douyu-live').attr('data-status','preparing')
+					setTimeout($('#disarrange_section').css('z-index','10') , 100)
+				}
+				if($('.zh-douyu-live').attr('data-status')=='preparing'){
+					setTimeout($('#disarrange_section').css('z-index','10') , 100)
+				}
 
+			}
+		});
+		document.addEventListener('keyup',function(e){
+			if(e.keyCode==32) {
+				if($('.zh-douyu-live').attr('data-status')=='preparing'){
+					$('.zh-douyu-live').css('display','block')
+					$('.zh-douyu-live').attr('data-status','starting')
+					chrome.runtime.sendMessage({action: "timer-starting",timer:"zhtimer"}, function(response) {
+						console.log(response);
+					});
+				}
+				else if($('.zh-douyu-live').attr('data-status')=='starting'){
+					$('.zh-douyu-live').attr('data-status','ending')
+					chrome.runtime.sendMessage({action: "timer-end",timer:"zhtimer",time_result:$('#msms').text()}, function(response) {
+						console.log(response);
+					});
+				}
+			}
+		})
 	}
 }
 var nickId,nickName,chatId,chatMessage

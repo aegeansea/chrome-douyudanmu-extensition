@@ -22,17 +22,51 @@ top:550px;
 }
 
 
-.cs-douyu-live{
+.cs-douyu-live, .zh-douyu-live{
 	z-index: 9999999;position: absolute;top: 12%;left: 80%;bottom: 10%;right: 5%;display: none;
 }
-.cs-scramble-section{
+.cs-scramble-section , .zh-scramble-section{
 	width: 100%;background-color: #449d44
 }
 
-.cs-douyu-time-list{
+.cs-douyu-time-list , .zh-douyu-time-list{
 	width: 100%;height: 800px;background: none;
 }
-
+.lucky-draw-panel{
+	z-index: 9999999;
+	display: none;
+	position: fixed;
+	top: 10%;
+	bottom: 10%;
+	left: 10%;
+	right: 10%;
+	/*background-color: #a6e1ec;*/
+	background-color: white;
+	font-size: 40px;
+}
+.lucky-draw-panel .draw-button{
+	position:absolute;
+	z-index: 99999999999;
+	left:20%;
+	right:20%;
+	bottom:5%;
+	width: 60%;
+	height: 10%;
+	font-size: 40px;
+}
+.lucky-draw-result{
+	z-index: 999;
+	display: none;
+	position: fixed;
+	top: 10%;
+	bottom: 10%;
+	left: 90%;
+	right: 0%;
+	/*background-color: #a6e1ec;*/
+	background-color: deepskyblue;
+	font-size: 20px;
+	text-align: center;
+}
 .time-item{
 	/*vertical-align: middle;*/
 	height: 30px;
@@ -66,7 +100,7 @@ top:550px;
 }
 
 .time-item .name123{
-	position: absolute;
+	position:relative;
 	top: 10%;
 	bottom: 10%;
 	left: 0%;

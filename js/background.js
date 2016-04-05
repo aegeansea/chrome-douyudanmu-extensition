@@ -25,6 +25,7 @@ var background={
 						var content = {nickname:request.nickname,result:request.result}
 						sendResponse({state:'douyu-danmu-timer-back',timer:'douyu',nickname:request.nickname,result:request.result})
 						background.message_to_cstimer_page('douyu-danmu-timer-back',content)
+						background.message_to_zhtimer_page('douyu-danmu-timer-back',content)
 						break;
 					default:
 			    		sendResponse({success: 1});
@@ -101,7 +102,28 @@ var background={
 				});
 			};
 		})
+	},
+	message_to_zhtimer_page: function (action,content) {
+		console.log('send message backto zhtimer page')
+		console.log(action,content)
+		chrome.windows.getAll(function(wnds){
+			for (var i = 0; i < wnds.length; i++) {
+				chrome.tabs.query({windowId:wnds[i].id},function(tabs){
+					for(var i=0; i < tabs.length; i++){
+						if(tabs[i].url.indexOf('zhtimer')>=0){
+							chrome.tabs.sendMessage(tabs[i].id,{action:action,content:content}, function(response) {
+								console.log(tabs[i].id)
+								console.log(response);
+							});
+							break;
+						}
+					}
+				});
+			};
+		})
 	}
+
+
 }
 
 background.init()
