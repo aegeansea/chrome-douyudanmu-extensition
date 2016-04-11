@@ -46,20 +46,18 @@ var content={
 			                "from the extension");
 			    switch (request.action)
 			    {
-			    	case "sendmsg":
-			    		window.localStorage.setItem('sendmsg',request.content)
-			    		console.log('sendmsg saved')
-			    		break;
-			    	case "wellcomemsg":
-			    		window.localStorage.setItem('wellcomemsg',request.content)
-			    		console.log('wellcomemsg saved')
+
+			    	case "vote_list_update":
+						var jsoncontent = JSON.stringify(request.content)      //存储前先用JSON.stringify()方法将json对象转换成字符串形式
+			    		window.localStorage.setItem('vote_list',jsoncontent)
+			    		console.log('vote_list saved')
 			    		break;
 					case "zhubo-time-result-backto-douyu":
 						console.log(request.content)
 						content.sendDouyuMsg(request.content)
 						break;
 					case "douyu-danmu-timer-back":
-						console.log(request.content)
+						console.log(request.content);
 						content.addTimeItem(request.content.nickname,request.content.result)
 						break;
 			    	default:
@@ -83,8 +81,8 @@ var content={
 		msgDoms.each(function(){
 			nickId=$(this).find('span.name .nick').attr("rel");
 			nickName=$(this).find('span.name .nick').text();
-			chatId=$(this).find('span.text_cont,span.m').attr('chatid');
-			chatMessage=$(this).find('span.text_cont,span.m').text();
+			chatId=$(this).find('span.text-cont,span.m').attr('chatid');    //斗鱼4.1日由 text_cont 改为了 text-cont
+			chatMessage=$(this).find('span.text-cont,span.m').text();
 			$(this).addClass('operated')
 			window.localStorage.setItem('lastchatid',chatId)
 			console.log(nickId,nickName,chatId,chatMessage);
@@ -153,7 +151,7 @@ var content={
 		mainbutton_html=jshtml+'<div class="douyubutton" style="top: 0px;float:left; margin-left: 20px; position: relative; z-index:999999999">' +
 			'<button type="button" class="button-start extension-btn">开启监控弹幕</button>' +
 			'<button type="button" class=" extension-btn">计时器</button>' +
-			'<button type="button" class=" extension-btn">投票</button>' +
+			'<button type="button" class="vote-open extension-btn">投票</button>' +
 			'<button type="button" class="lucky-draw extension-btn">抽奖</button>' +
 			'</div>';
 
@@ -162,14 +160,24 @@ var content={
 			'<button class="button-draw-listen extension-btn" style="z-index: 999;position:absolute;margin:20px;">开始接受弹幕</button>' +
 			'<div style="text-align: center"><button class="draw-button extension-btn">抽奖</button></div>' +
 			'</div>'+ '<div class="lucky-draw-result"><h5 style="font-size: 30px">获奖名单：</h5></div>'
+
+
+		vote_html = '<div class="vote-panel">' +
+			'<button class="extension-btn" style="position: absolute;left: 95%;margin:20px;z-index: 999" id="vote-close">X</button>' +
+			'<button class="button-vote-listen extension-btn" style="z-index: 999;position:absolute;margin:20px;">开始接受弹幕</button>' +
+			'<div class="progress"> ' +
+			'<div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">' +
+			' <span class="sr-only">40% Complete (success)</span> </div> </div>'+
+			'</div>'
 		$('body').append(draw_html)
+		$('body').append(vote_html)
 		//$("#chat_lines").after(mainbutton_html);
 		//$('.ad_map').append(mainbutton_html)
 		$('#box_div').after(mainbutton_html)
 		$('.get-yw').after(mainbutton_html)
 		$(".button-start").data('status',0);
-		$(".button-start").data('status',0);
 		$(".button-draw-listen").data('status',0);
+		$(".button-vote-listen").data('status',0);
 
 		var draw_task
 
@@ -190,6 +198,7 @@ var content={
 
 
 		var task
+		// douyu page 开始监控按钮
 		$(".button-start").on('click',function(){
 			if ($(this).data('status')==0) {
 				$(this).data('status',1);//1开启 0暂停中
@@ -204,7 +213,7 @@ var content={
 				console.log('关闭')				
 			}	
 		})
-
+		// douyu page 抽奖按钮
 		$(".lucky-draw").on('click',function(){
 			$(".lucky-draw-panel").css('display','block')
 			$(".lucky-draw-result").css('display','block')
@@ -216,6 +225,22 @@ var content={
 				msgDoms_old=$('.c-list').has('.jschartli').children().children().not('.operated')
 			}
 			msgDoms_old.children('.name').parent().addClass('operated')
+		})
+		// douyu page 投票按钮
+		$(".vote-open").on('click',function(){
+			$(".vote-panel").css('display','block')
+			var msgDoms_old
+			if($('#chat_line_list').length){
+				msgDoms_old=$('#chat_line_list').has('.jschartli').children().children().not('.operated')
+			}
+			else{
+				msgDoms_old=$('.c-list').has('.jschartli').children().children().not('.operated')
+			}
+			msgDoms_old.children('.name').parent().addClass('operated')
+		})
+
+		$("#vote-close").on('click',function(){
+			$(".vote-panel").css('display','none')
 		})
 
 		$("#draw-close").on('click',function(){

@@ -11,6 +11,10 @@ var background={
 			                "from the extension");
 			    switch (request.action)
 			    {
+					case "vote_list_update":
+						console.log(request)
+						background.message_to_douyu_page('vote_list_update',request.list)
+						sendResponse({state:'vote_list_update',result:request.list})
 			    	case "timer-starting":
 			    		console.log(request)
 			    		sendResponse({state:'timer-starting',timer:request.timer})
@@ -34,31 +38,27 @@ var background={
   		});
 
   		//同步chrome storage 和local storage
-  		chrome.storage.onChanged.addListener(function(){
-  			chrome.storage.local.get(['sendmsg','wellcomemsg'],function(items){
-  				console.log('chrome storage发生改变')
-  				console.log(items)
-  				sendmsg=items.sendmsg
-  				wellcomemsg=items.wellcomemsg
-  				chrome.windows.getAll(function(wnds){
-  					for (var i = 0; i < wnds.length; i++) {
-  						chrome.tabs.query({windowId:wnds[i].id},function(tabs){ 
-			            	for(var i=0; i < tabs.length; i++){
-			            		if(tabs[i].url.indexOf('douyu')>=0){
-			            			chrome.tabs.sendRequest(tabs[i].id,{action:'sendmsg',content:sendmsg}, function(response) {
-			  						console.log(response);
-									});
-									chrome.tabs.sendRequest(tabs[i].id,{action:'wellcomemsg',content:wellcomemsg}, function(response) {
-			  						console.log(response);
-									});
-									break;
-			            		} 
-			            	}
-			            });
-  					};
-		        })
-  			});
-  		});
+  		//chrome.storage.onChanged.addListener(function(){
+  		//	chrome.storage.local.get(['voting_option'],function(items){
+  		//		console.log('voting list 更新')
+  		//		console.log(items)
+			//	voting_option=items.voting_option
+  		//		chrome.windows.getAll(function(wnds){
+  		//			for (var i = 0; i < wnds.length; i++) {
+  		//				chrome.tabs.query({windowId:wnds[i].id},function(tabs){
+			//            	for(var i=0; i < tabs.length; i++){
+			//            		if(tabs[i].url.indexOf('douyu')>=0){
+			//            			chrome.tabs.sendRequest(tabs[i].id,{action:'voting_option',content:voting_option}, function(response) {
+			//  						console.log(response);
+			//						});
+			//						break;
+			//            		}
+			//            	}
+			//            });
+  		//			};
+		  //      })
+  		//	});
+  		//});
 
 	},
 	//发送message到 斗鱼页面的 content_scripts
@@ -103,6 +103,9 @@ var background={
 			};
 		})
 	},
+
+
+	//发送message到 zhtimer的 content_scripts
 	message_to_zhtimer_page: function (action,content) {
 		console.log('send message backto zhtimer page')
 		console.log(action,content)

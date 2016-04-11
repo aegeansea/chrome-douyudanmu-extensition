@@ -32,7 +32,7 @@ top:550px;
 .cs-douyu-time-list , .zh-douyu-time-list{
 	width: 100%;height: 800px;background: none;
 }
-.lucky-draw-panel{
+.lucky-draw-panel , .vote-panel{
 	z-index: 9999999;
 	display: none;
 	position: fixed;

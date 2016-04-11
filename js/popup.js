@@ -8,22 +8,6 @@ var popup ={
 		$('.default-setting').on('click',function(){
 			popup.Default()
 		})
-		$('.tts-save').on('click',function(event){
-			chrome.storage.local.get('ttsoption',function(items){
-				items.ttsoption.volume=parseFloat($("#volume").val())
-				items.ttsoption.rate=parseFloat($("#rate").val())
-				items.ttsoption.pitch=parseFloat($("#pitch").val())
-				chrome.storage.local.set({'ttsoption':items.ttsoption},function(){
-						popup.HtmlAlert("更新完成")
-						popup.styleInit()
-						console.log(items.ttsoption)
-				})
-			});
-		})
-		$('.tts-clear').on('click',function(){
-			chrome.tts.stop()
-			popup.HtmlAlert("已清空")
-		})
 		$('.send-msg-save').on('click',function(){
 			sendmsg=$('#send-msg').val()
 			wellcomemsg=$('#wellcome-msg').val()
@@ -71,11 +55,15 @@ var popup ={
 				value_name = $('.voting-setting ul').eq(i).children('.true_value').val()
 				vote_list[index_name] = value_name
 			}
-			chrome.storage.local.set({'voting_option':vote_list,'voting_length':num},function(){
+			chrome.runtime.sendMessage({action: "vote_list_update",list:vote_list}, function(response) {
+				chrome.storage.local.set({'voting_option':vote_list,'voting_length':num},function(){})
+				console.log(response);
 				popup.HtmlAlert("更新完成")
 				popup.styleInit()
-				console.log(vote_list,num)
-			})
+			});
+
+
+
 		})
 		$('.lucky-save').on('click',function(){
 			var options = {}
@@ -180,7 +168,7 @@ var popup ={
 		$('.result-save').click()
 		$('.voting-save').click()
 		$('.lucky-save').click()
-	},
+	}
 }
 //setInterval(walkloops, 2000);
 
