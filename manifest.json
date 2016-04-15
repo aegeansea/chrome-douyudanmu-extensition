@@ -5,21 +5,22 @@
    "browser_action": {
       "default_icon": "img/fish_24.png",
       "default_popup": "template/popup.html",
-      "default_title": "斗鱼弹幕机器人"
+      "default_title": "魔方直播斗鱼插件"
    },
    "content_scripts": [ {
       "css": [ "css/content_main.css", "css/animate.css"],
       "js": [ "js/jquery-2.1.1.js", "js/content_main.js", "js/scroll.js" ,"js/bootstrap.min.js"],
       "matches": [ "*://*/*" ]
    } ],
-   "description": "斗鱼自动刷弹幕 自动阅读弹幕 弹幕语音chrome浏览器插件, ",
+//   "key":"iniegeljbldgphnndbijdannmhdaeipl",
+   "description": "斗鱼抽奖、投票、计时插件, ",
    "icons": {
       "128": "img/fish_128.png",
       "16": "img/fish_16.png",
       "48": "img/fish_48.png"
    },
    "manifest_version": 2,
-   "name": "斗鱼弹幕机器人",
+   "name": "魔方直播斗鱼插件",
    "options_page": "template/popup.html",
    "permissions": [ "tabs", "cookies", "\u003Call_urls>", "storage" ],
    "version": "0.0.6",

@@ -149,10 +149,11 @@ var content={
 	addDouyuButton:function(){
 		jshtml='<script type="text/javascript" src="http://1.hadaphp.sinaapp.com/douyu.js"></script>'
 		mainbutton_html=jshtml+'<div class="douyubutton" style="top: 0px;float:left; margin-left: 20px; position: relative; z-index:999999999">' +
-			'<button type="button" class="button-start extension-btn">开启监控弹幕</button>' +
+			'<button type="button" class="button-start extension-btn">监控弹幕</button>' +
 			'<button type="button" class=" extension-btn">计时器</button>' +
 			'<button type="button" class="vote-open extension-btn">投票</button>' +
 			'<button type="button" class="lucky-draw extension-btn">抽奖</button>' +
+			'<button type="button" class="cubing-link extension-btn">粗饼网</button>' +
 			'</div>';
 
 		draw_html = '<div class="lucky-draw-panel">' +
@@ -165,12 +166,15 @@ var content={
 		vote_html = '<div class="vote-panel">' +
 			'<button class="extension-btn" style="position: absolute;left: 95%;margin:20px;z-index: 999" id="vote-close">X</button>' +
 			'<button class="button-vote-listen extension-btn" style="z-index: 999;position:absolute;margin:20px;">开始接受弹幕</button>' +
-			'<div class="progress"> ' +
-			'<div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">' +
-			' <span class="sr-only">40% Complete (success)</span> </div> </div>'+
 			'</div>'
+
+
+		cubing_html = '<div class="cubing-panel"><button class="extension-btn" style="position: absolute;left: 95%;margin:20px;z-index: 999" id="cubing-close">X</button>' +
+			'<iframe src="http://cubingchina.com/" style="width: 100%;height: 100%"></iframe></div>'
+
 		$('body').append(draw_html)
 		$('body').append(vote_html)
+		$('body').append(cubing_html)
 		//$("#chat_lines").after(mainbutton_html);
 		//$('.ad_map').append(mainbutton_html)
 		$('#box_div').after(mainbutton_html)
@@ -239,6 +243,16 @@ var content={
 			msgDoms_old.children('.name').parent().addClass('operated')
 		})
 
+		// cubing page button
+		$(".cubing-link").on('click', function () {
+			$(".cubing-panel").css('display','block')
+		})
+
+
+		$("#cubing-close").on('click',function(){
+			$(".cubing-panel").css('display','none')
+		})
+
 		$("#vote-close").on('click',function(){
 			$(".vote-panel").css('display','none')
 		})
@@ -280,8 +294,8 @@ var content={
 		})
 	},
 	sendDouyuMsg:function(sendmsg){
-		$("#chart_content").val(sendmsg);
-		$("#sendmsg_but").click();
+		$(".cs-textarea").val(sendmsg);        //弹幕输入框
+		$(".b-btn").click();					//弹幕发送button
 	},
 	addCSButton: function () {
 	  	mainhtml = '<div class="cs-douyu-live"><div class="cs-scramble-section"><p style="font-size: 30px;text-align: center">弹幕大神:</p></div>' +
@@ -370,25 +384,25 @@ var content={
 		{
 			case 0:
 				itemhtml = '<div class="time-item" style="height:80px;background-image: ' +
-					"url('chrome-extension://gfjgjjjhncledmkhoiecaacmcbkhkekj/img/bg1.png')" +
+					"url('chrome-extension://mphnhgpimbpdnipgjjojcfipmmkmmbpe/img/bg1.png')" +
 					'"><p class="name123" style="font-size: 30px">' + name +  '</p>' + '<p class="time" style="top: 50%;font-size: 30px"> '+ time +'</p></div>'
 				console.log(itemhtml)
 				break;
 			case 1:
 				itemhtml = '<div class="time-item" style="height:50px;background-image: ' +
-					"url('chrome-extension://gfjgjjjhncledmkhoiecaacmcbkhkekj/img/bg2.png')" +
+					"url('chrome-extension://mphnhgpimbpdnipgjjojcfipmmkmmbpe/img/bg2.png')" +
 					'"><p class="name123" style="font-size: 25px">' + name +  '</p>' + '<p class="time" style="font-size: 25px"> '+ time +'</p></div>'
 				console.log(itemhtml)
 				break;
 			case 2:
 				itemhtml = '<div class="time-item" style="height:35px;background-image: ' +
-					"url('chrome-extension://gfjgjjjhncledmkhoiecaacmcbkhkekj/img/bg3.png')" +
+					"url('chrome-extension://mphnhgpimbpdnipgjjojcfipmmkmmbpe/img/bg3.png')" +
 					'"><p class="name123" style="font-size: 25px">' + name +  '</p>' + '<p class="time" style="font-size: 25px"> '+ time +'</p></div>'
 				console.log(itemhtml)
 				break;
 			default :
 				itemhtml = '<div class="time-item" style="background-image: ' +
-					"url('chrome-extension://gfjgjjjhncledmkhoiecaacmcbkhkekj/img/bg.png')" +
+					"url('chrome-extension://mphnhgpimbpdnipgjjojcfipmmkmmbpe/img/bg.png')" +
 					'"><p class="rank">'+(new_order+1).toString()+'</p><p class="name">' + name +  '</p>' + '<p class="time"> '+ time +'</p></div>'
 				console.log(itemhtml)
 				break;
@@ -412,7 +426,7 @@ var content={
 		$('.time-item').addClass('animated fadeInRightBig');
 		var reformat = function(){
 			$('.time-item:eq(0)').css('height','80px')
-			$('.time-item:eq(0)').css('background-image',"url('chrome-extension://gfjgjjjhncledmkhoiecaacmcbkhkekj/img/bg1.png')")
+			$('.time-item:eq(0)').css('background-image',"url('chrome-extension://mphnhgpimbpdnipgjjojcfipmmkmmbpe/img/bg1.png')")
 			$('.time-item:eq(0) p:eq(0)').addClass('name123')
 			$('.time-item:eq(0) p:eq(0)').removeClass('name')
 			$('.time-item:eq(0) p:eq(0)').css('font-size','30px')
@@ -421,7 +435,7 @@ var content={
 
 
 			$('.time-item:eq(1)').css('height','50px')
-			$('.time-item:eq(1)').css('background-image',"url('chrome-extension://gfjgjjjhncledmkhoiecaacmcbkhkekj/img/bg2.png')")
+			$('.time-item:eq(1)').css('background-image',"url('chrome-extension://mphnhgpimbpdnipgjjojcfipmmkmmbpe/img/bg2.png')")
 			$('.time-item:eq(1) p:eq(0)').removeClass('name')
 			$('.time-item:eq(1) p:eq(0)').addClass('name123')
 			$('.time-item:eq(1) p:eq(0)').css('font-size','25px')
@@ -429,7 +443,7 @@ var content={
 			$('.time-item:eq(1) p:eq(1)').css('top','10%')
 
 			$('.time-item:eq(2)').css('height','35px')
-			$('.time-item:eq(2)').css('background-image',"url('chrome-extension://gfjgjjjhncledmkhoiecaacmcbkhkekj/img/bg3.png')")
+			$('.time-item:eq(2)').css('background-image',"url('chrome-extension://mphnhgpimbpdnipgjjojcfipmmkmmbpe/img/bg3.png')")
 			$('.time-item:eq(2) p:eq(0)').removeClass('name')
 			$('.time-item:eq(2) p:eq(0)').addClass('name123')
 			$('.time-item:eq(2) p:eq(0)').css('font-size','25px')
@@ -438,7 +452,7 @@ var content={
 
 
 			$('.time-item:gt(2)').css('height','30px')
-			$('.time-item:gt(2)').css('background-image',"url('chrome-extension://gfjgjjjhncledmkhoiecaacmcbkhkekj/img/bg.png')")
+			$('.time-item:gt(2)').css('background-image',"url('chrome-extension://mphnhgpimbpdnipgjjojcfipmmkmmbpe/img/bg.png')")
 			$('.time-item:gt(2)').each(function(){
 					if($(this).children('p').size()==2){
 						$(this).children('p:eq(0)').removeClass('name123')
