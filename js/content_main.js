@@ -170,9 +170,11 @@ var content={
 
 
 		sloving_html = '<div class="sloving-panel"><button class="extension-btn" style="position: absolute;left: 95%;margin:20px;z-index: 999" id="sloving-close">X</button>' +
-			'<div style="font-size: 50px;"><span style="color: green">复原:</span><span>0</span><span style="color: darkred">\t剩余:</span><span>100</span></div>'+
+			'<div style="font-size: 50px;"><span style="color: green">复原:</span><span id="htimer-sloved">0</span><span style="color: darkred">\t剩余:</span><span id="htimer-unsloved">100</span></div>'+
 			'<div id="htimer" class="timer_section"><div id="msms" class="msms"><span id="h2">0</span>小时<span id="m1">0</span><span id="m2">0</span>分钟<span id="s1">0</span>' +
 			'<span id="s2">0</span>秒</div> </div></div>'
+
+
 
 		cubing_html = '<div class="cubing-panel"><button class="extension-btn" style="position: absolute;left: 95%;margin:20px;z-index: 999" id="cubing-close">X</button>' +
 			'<iframe src="http://cubingchina.com/" style="width: 100%;height: 100%"></iframe></div>'
@@ -188,6 +190,7 @@ var content={
 		$(".button-start").data('status',0);
 		$(".button-draw-listen").data('status',0);
 		$(".button-vote-listen").data('status',0);
+		$(".sloving-panel").data('status',0);
 
 		var draw_task
 
@@ -256,10 +259,15 @@ var content={
 		//te shu page button
 		$(".special-btn").on('click', function () {
 			$(".sloving-panel").css('display','block')
+			$(".sloving-panel").data('status',1);
+
 		})
 
 		$("#sloving-close").on('click', function () {
 			$(this).parent().css('display','none')
+			$(".sloving-panel").data('status',0);
+			$("#htimer-sloved").text(0)
+			$("#htimer-unsloved").text(100)
 		})
 		$("#cubing-close").on('click',function(){
 			$(".cubing-panel").css('display','none')
