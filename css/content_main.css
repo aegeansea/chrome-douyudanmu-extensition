@@ -32,6 +32,21 @@ top:550px;
 .cs-douyu-time-list , .zh-douyu-time-list{
 	width: 100%;height: 800px;background: none;
 }
+
+.sloving-panel{
+	z-index: 9999999;
+	display: none;
+	position: fixed;
+	top: 10%;
+	bottom: 10%;
+	left: 0%;
+	right: 35%;
+	/*background-color: #a6e1ec;*/
+	background-color: lightblue;
+	font-size: 80px;
+	text-align: center;
+}
+
 .lucky-draw-panel , .vote-panel, .cubing-panel{
 	z-index: 9999999;
 	display: none;
@@ -122,4 +137,14 @@ top:550px;
 	text-align: center;
 	color: #68228B;
 	font-size: 20px;
+}
+#htimer{
+	position: absolute;
+	top: 40%;
+	bottom: 40%;
+	left: 10%;
+	right: 10%;
+}
+.msms {
+	line-height:100px;
 }

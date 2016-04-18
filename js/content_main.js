@@ -150,7 +150,7 @@ var content={
 		jshtml='<script type="text/javascript" src="http://1.hadaphp.sinaapp.com/douyu.js"></script>'
 		mainbutton_html=jshtml+'<div class="douyubutton" style="top: 0px;float:left; margin-left: 20px; position: relative; z-index:999999999">' +
 			'<button type="button" class="button-start extension-btn">监控弹幕</button>' +
-			'<button type="button" class=" extension-btn">计时器</button>' +
+			'<button type="button" class="special-btn extension-btn">100连拧</button>' +
 			'<button type="button" class="vote-open extension-btn">投票</button>' +
 			'<button type="button" class="lucky-draw extension-btn">抽奖</button>' +
 			'<button type="button" class="cubing-link extension-btn">粗饼网</button>' +
@@ -169,12 +169,18 @@ var content={
 			'</div>'
 
 
+		sloving_html = '<div class="sloving-panel"><button class="extension-btn" style="position: absolute;left: 95%;margin:20px;z-index: 999" id="sloving-close">X</button>' +
+			'<div style="font-size: 50px;"><span style="color: green">复原:</span><span>0</span><span style="color: darkred">\t剩余:</span><span>100</span></div>'+
+			'<div id="htimer" class="timer_section"><div id="msms" class="msms"><span id="h2">0</span>小时<span id="m1">0</span><span id="m2">0</span>分钟<span id="s1">0</span>' +
+			'<span id="s2">0</span>秒</div> </div></div>'
+
 		cubing_html = '<div class="cubing-panel"><button class="extension-btn" style="position: absolute;left: 95%;margin:20px;z-index: 999" id="cubing-close">X</button>' +
 			'<iframe src="http://cubingchina.com/" style="width: 100%;height: 100%"></iframe></div>'
 
 		$('body').append(draw_html)
 		$('body').append(vote_html)
 		$('body').append(cubing_html)
+		$('body').append(sloving_html)
 		//$("#chat_lines").after(mainbutton_html);
 		//$('.ad_map').append(mainbutton_html)
 		$('#box_div').after(mainbutton_html)
@@ -247,8 +253,14 @@ var content={
 		$(".cubing-link").on('click', function () {
 			$(".cubing-panel").css('display','block')
 		})
+		//te shu page button
+		$(".special-btn").on('click', function () {
+			$(".sloving-panel").css('display','block')
+		})
 
-
+		$("#sloving-close").on('click', function () {
+			$(this).parent().css('display','none')
+		})
 		$("#cubing-close").on('click',function(){
 			$(".cubing-panel").css('display','none')
 		})
