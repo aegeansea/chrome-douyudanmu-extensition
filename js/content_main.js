@@ -56,6 +56,11 @@ var content={
 						console.log(request.content)
 						content.sendDouyuMsg(request.content)
 						break;
+					case 'zhubo-scramble-backto-douyu':
+						console.log(request.content)
+						content.sendDouyuMsg("下一轮打乱为:")
+						content.sendDouyuMsg(request.content)
+						break;
 					case "douyu-danmu-timer-back":
 						console.log(request.content);
 						content.addTimeItem(request.content.nickname,request.content.result)
@@ -318,7 +323,8 @@ var content={
 		$(".b-btn").click();					//弹幕发送button
 	},
 	addCSButton: function () {
-	  	mainhtml = '<div class="cs-douyu-live"><div class="cs-scramble-section"><p style="font-size: 30px;text-align: center">弹幕大神:</p></div>' +
+	  	mainhtml = '<div class="cs-douyu-live"><div class="cs-scramble-section"><p style="font-size: 30px;text-align: center">弹幕大神:</p>' +
+			'<button id="send-scramble">发送打乱</button></div>' +
 			'<div class="cs-douyu-time-list" ></div></div>';
 		//mainhtml = '<div class="cs-douyu-live"><div class="cs-scramble-section"><p>弹幕大神:</p><button id="addbutton">add</button></div>' +
 		//	'<div class="cs-douyu-time-list" ></div></div>';
@@ -327,6 +333,13 @@ var content={
 		$('#addbutton').on('click', function () {
 			var time = (Math.random()*20).toFixed(3)
 			content.addTimeItem('kira',time)
+		})
+
+		$('#send-scramble').on('click', function () {
+			var scramble_text = $('#scrambleTxt').text()
+			chrome.runtime.sendMessage({action:"send-scramble",timer:"cstimer",scramble:scramble_text}, function (response) {
+				console.log(response)
+			})
 		})
 		document.addEventListener('keydown', function (e) {
 			if(e.keyCode == 32){

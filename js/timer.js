@@ -14,8 +14,8 @@ $(function() {
         $("#s2").text(t / 1000 % 60 % 10 | 0)
         $("#s1").text(t / 1000 % 60 / 10 | 0)
         $("#m2").text(t / 1000 / 60 % 10 | 0)
-        $("#m1").text(t / 1000 / 60 / 10 | 0)
-        $("#h2").text(t/  1000 / 60 / 60 % 10 | 0)
+        $("#m1").text(t / 1000 / 60 % 60 / 10 | 0)
+        $("#h2").text(t/  1000 / 60 / 60 | 0)
     }
 
     document.addEventListener("keydown", function(e) {

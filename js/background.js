@@ -31,6 +31,11 @@ var background={
 						background.message_to_cstimer_page('douyu-danmu-timer-back',content)
 						background.message_to_zhtimer_page('douyu-danmu-timer-back',content)
 						break;
+					case "send-scramble":
+						console.log(request)
+						background.message_to_douyu_page('zhubo-scramble-backto-douyu',request.scramble)
+						sendResponse({state:"send-scramble",timer:request.timer,scramble:request.scramble})
+						break;
 					default:
 			    		sendResponse({success: 1});
 			    		break;
